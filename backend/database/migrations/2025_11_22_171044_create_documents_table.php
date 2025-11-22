@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            $table->id('id_document');
+            $table->foreignId('id_user')->constrained('users', 'id_user')->onDelete('cascade');
             $table->string('name', 255);
             $table->string('file_path', 500);
             $table->timestamps();

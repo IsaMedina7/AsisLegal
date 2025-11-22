@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
 use Illuminate\Http\Request;
 
-class DocumentController extends Controller
+class AuthController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,25 +27,21 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $document = new Document();
-        $document->id_user = $request->input('id_user');
-        $document->file_path = $request->input('file_path');
-        $document->save();
-        $request->session()->flash('status', 'Document creado correctamente!');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Document $document)
+    public function show(string $id)
     {
-        //
+        return view('auth.login');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Document $document)
+    public function edit(string $id)
     {
         //
     }
@@ -54,7 +49,7 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Document $document)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -62,7 +57,7 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Document $document)
+    public function destroy(string $id)
     {
         //
     }

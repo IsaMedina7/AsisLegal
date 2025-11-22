@@ -12,7 +12,11 @@ class ChatController extends Controller
      */
     public function index()
     {
-        //
+        // 1. Buscamos los chats del usuario 1 (Hardcodeado para pruebas)
+        $chats = \App\Models\Chat::where('id_user', 1)->orderBy('created_at', 'desc')->get();
+
+        // 2. Enviamos la variable $chats a la vista usando compact()
+        return view('dashboard', compact('chats'));
     }
 
     /**
@@ -28,7 +32,11 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $chat = new Chat();
+        $chat->id_user = $request->input('id_user');
+        $chat->title = $request->input('title');
+        $chat->save();
+        $request->session()->flash('status', 'Chat creado correctamente!');
     }
 
     /**
