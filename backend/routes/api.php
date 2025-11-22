@@ -3,23 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\MessageController; // <--- Nuevo
 
-// NOTA: Las rutas en api.php automáticamente tienen el prefijo '/api'
-// Ejemplo: http://127.0.0.1:8000/api/chats
+// --- A. RUTAS DE CHATS (El núcleo) ---
+Route::get('/chats', [ChatController::class, 'index']);           // Listar chats
+Route::post('/chats', [ChatController::class, 'store']);          // Crear chat (Subir PDF)
+Route::get('/chats/{id}', [ChatController::class, 'show']);       // Ver chat (trae mensajes)
+Route::delete('/chats/{id}', [ChatController::class, 'destroy']); // Borrar chat completo
 
-// 1. Obtener todos los chats del usuario (Para tu lista en el front)
-Route::get('/chats', [ChatController::class, 'index']);
-
-// 2. Crear nuevo chat (Subir archivo)
-Route::post('/chats', [ChatController::class, 'store']);
-
-// 3. Obtener un chat específico con sus mensajes
-Route::get('/chats/{id}', [ChatController::class, 'show']);
-
-// 4. Enviar mensaje a la IA
+// --- B. RUTAS DE MENSAJES (La conversación) ---
+// Nota: El envío de mensaje a la IA sigue estando ligado al Chat
 Route::post('/chats/{id}/mensaje', [ChatController::class, 'sendMessage']);
+// Pero agregamos una ruta para borrar mensajes sueltos si quisieras
+Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
 
-// --- RUTAS DE DOCUMENTOS ---
-Route::get('/documents', [DocumentController::class, 'index']);           // Ver todos
-Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Descargar PDF
-Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Eliminar
+// --- C. RUTAS DE DOCUMENTOS (Gestión de archivos) ---
+Route::get('/documents', [DocumentController::class, 'index']);           // Ver mis archivos
+Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Descargar
+Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Borrar archivo
