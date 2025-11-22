@@ -13,3 +13,12 @@ google-generativeai
 chromadb
 pypdf
 python-multipart
+
+# Dependencias para LangChain, embeddings y audio
+langchain
+langchain-community
+chromadb
+langchain-google-genai
+google-generative-ai
+gTTS
+pypdf
