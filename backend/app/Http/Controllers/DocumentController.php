@@ -7,74 +7,58 @@ use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // 1. LISTAR DOCUMENTOS (GET /api/documents)
     public function index()
     {
-        //
+        // Hardcode usuario 1 (Modo Pruebas)
+        $documents = Document::where('id_user', 1)
+                             ->orderBy('created_at', 'desc')
+                             ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $documents
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // 2. DESCARGAR PDF (GET /api/documents/{id}/download)
+    public function download($id)
     {
-        //
+        $document = Document::find($id);
+
+        if (!$document) {
+            return response()->json(['message' => 'Documento no encontrado'], 404);
+        }
+
+        // Verificar si el archivo físico existe
+        if (!Storage::disk('public')->exists($document->file_path)) {
+            return response()->json(['message' => 'El archivo físico fue borrado del servidor'], 404);
+        }
+
+        // Forzar la descarga del archivo
+        return Storage::disk('public')->download($document->file_path, $document->nombre);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // 3. BORRAR DOCUMENTO (DELETE /api/documents/{id})
+    public function destroy($id)
     {
-        $request->validate([
-            'pdf_file' => 'required|mimes:pdf|max:10240',
-            'titulo' => 'nullable|string|max:255'
-        ]);
+        $document = Document::find($id);
 
-        // 1. Guardar archivo
-        $path = $request->file('pdf_file')->store('documentos', 'public');
+        if (!$document) {
+            return response()->json(['message' => 'Documento no encontrado'], 404);
+        }
 
-        // 2. Crear Documento (AQUÍ ESTABA EL PRIMER ERROR)
-        $document = Document::create([
-            'nombre' => $request->file('pdf_file')->getClientOriginalName(),
-            'file_path' => $path,
-            'id_user' => 1 // <--- CAMBIO: Antes tenías Auth::id()
-        ]);
+        // 1. Borrar archivo físico
+        if (Storage::disk('public')->exists($document->file_path)) {
+            Storage::disk('public')->delete($document->file_path);
+        }
 
-        $document->save();
-    }
+        // 2. Borrar registro de BD (Esto borrará los chats asociados por la FK cascade)
+        $document->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Document $document)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Document $document)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Document $document)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Document $document)
-    {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Documento y chats asociados eliminados correctamente'
+        ], 200);
     }
 }
