@@ -1,19 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Prueba</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AsisLegal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="p-10 bg-gray-100">
+<body>
+    <div class="container py-5">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="mx-auto text-center">
+            <h1 class="display-4">AsisLegal</h1>
+            <p class="mt-4 lead">Bienvenido a AsisLegal, tu compañero para gestionar y comprender textos legales de
+                manera eficiente.</p>
+            <p class="text-muted">Sube documentos legales, haz preguntas y obtén respuestas claras y fáciles de
+                entender.</p>
+            <button id="start-btn" class="mt-4 btn btn-primary btn-lg">Crear consulta</button>
+        </div>
 
-    <div class="mx-auto max-w-4xl">
-        <h1 class="mb-8 text-3xl font-bold">Dashboard Legal (Modo Pruebas)</h1>
+        <!-- Chat / Interaction Screen (hidden initially) -->
+        <div id="chat-screen" class="d-none">
+            <div class="row g-3">
+                <div class="col-12 col-lg-8">
+                    <div class="card chat-card">
+                        <div class="bg-white card-header d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0">AsisLegal</h5>
+                            <small class="text-muted">Consulta tus documentos</small>
+                        </div>
+                        <div class="card-body chat-body" id="messages">
+                            <!-- messages appended here -->
+                            <div class="mt-3 text-center text-muted">No hay mensajes aún. Empieza preguntando sobre tus
+                                documentos.</div>
+                        </div>
+                        <div class="bg-white card-footer">
+                            <div class="input-group">
+                                <input id="question-input" type="text" class="form-control"
+                                    placeholder="Escribe tu pregunta...">
+                                <button id="send-btn" class="btn btn-primary">Enviar</button>
+                            </div>
+                            <div class="gap-2 mt-2 d-flex">
+                                <button id="play-audio" class="btn btn-outline-secondary btn-sm">Reproducir última
+                                    respuesta</button>
+                                <button id="back-btn" class="btn btn-link btn-sm text-danger ms-auto">Volver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-12 col-lg-4">
+                    <div class="card sidebar-card">
+                        <div class="card-header">Documentos</div>
+                        <div class="card-body">
+                            <form id="upload-form">
+                                <div class="mb-2">
+                                    <input id="file-input" type="file" class="form-control" multiple>
+                                </div>
+                                <div class="d-grid">
+                                    <button id="upload-btn" type="button" class="btn btn-success">Subir
+                                        documentos</button>
+                                </div>
+                            </form>
+
+                            <hr>
+                            <div id="files-list" class="files-list text-break small">
+                                <!-- Uploaded files listed here -->
+                                <div class="text-muted">No hay documentos cargados.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 text-muted small">
+                        Soporta archivos de texto y PDF. El contenido se muestra de forma simulada.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>

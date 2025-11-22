@@ -28,11 +28,22 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $document = new Document();
-        $document->id_user = $request->input('id_user');
-        $document->file_path = $request->input('file_path');
+        $request->validate([
+            'pdf_file' => 'required|mimes:pdf|max:10240',
+            'titulo' => 'nullable|string|max:255'
+        ]);
+
+        // 1. Guardar archivo
+        $path = $request->file('pdf_file')->store('documentos', 'public');
+
+        // 2. Crear Documento (AQUÍ ESTABA EL PRIMER ERROR)
+        $document = Document::create([
+            'nombre' => $request->file('pdf_file')->getClientOriginalName(),
+            'file_path' => $path,
+            'id_user' => 1 // <--- CAMBIO: Antes tenías Auth::id()
+        ]);
+
         $document->save();
-        $request->session()->flash('status', 'Document creado correctamente!');
     }
 
     /**
