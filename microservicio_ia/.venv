@@ -1,0 +1,14 @@
+# ==============================================
+# CONFIGURACIÓN DEL MICROSERVICIO IA
+# ==============================================
+
+# 1. API KEY DE GOOGLE (Gemini)
+# Pega aquí tu clave que empieza por "AIza..." sin comillas
+GOOGLE_API_KEY=AIzaSyCztjW5Xt0nvvzO7gSXz30V0bY89Vc69qg
+
+# 2. CONFIGURACIÓN DE ENTORNO (Opcional)
+# True para ver errores detallados, False para producción
+DEBUG=True
+
+# 3. OPENAI (Solo si decides cambiar de proveedor en el futuro, déjalo vacío por ahora)
+# OPENAI_API_KEY=
