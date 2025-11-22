@@ -108,7 +108,7 @@ class ChatController extends Controller
             // 3. Llamada a FastAPI
             $response = Http::timeout(120)
                 ->attach('files', file_get_contents($fullPath), $chat->document->nombre)
-                ->post('http://127.0.0.1:8000/api/chat-documentos', [
+                ->post('http://127.0.0.1:8080/api/documents', [
                     'query' => $request->input('content')
                 ]);
 

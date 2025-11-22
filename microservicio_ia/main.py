@@ -23,7 +23,7 @@ load_dotenv()
 app = FastAPI()
 
 # Configura tu API KEY aquí o en el .env
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") 
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", 'AIzaSyCztjW5Xt0nvvzO7gSXz30V0bY89Vc69qg')
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # --- TU LÓGICA DE AUDIO ---
