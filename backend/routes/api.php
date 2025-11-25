@@ -3,13 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\MessageController; // <--- Nuevo
 
-// --- A. RUTAS DE CHATS (El núcleo) ---
-Route::get('/chats', [ChatController::class, 'index']);           // Listar chats
-Route::post('/chats', [ChatController::class, 'store']);          // Crear chat (Subir PDF)
-Route::get('/chats/{id}', [ChatController::class, 'show']);       // Ver chat (trae mensajes)
-Route::delete('/chats/{id}', [ChatController::class, 'destroy']); // Borrar chat completo
+// RUTA DE PRUEBA
+Route::get('/test', function () { return ['status' => 'ok']; });
+
+// --- RUTAS "CORE" (Antiguos Chats) ---
+// Usamos 'core' para que el navegador no crea que es publicidad
+Route::get('/v1', [ChatController::class, 'index']);
+Route::post('/v1', [ChatController::class, 'store']);
+Route::get('/v1/{id}', [ChatController::class, 'show']);
+Route::post('/v1/{id}/mensaje', [ChatController::class, 'sendMessage']);
 
 // --- B. RUTAS DE MENSAJES (La conversación) ---
 // Nota: El envío de mensaje a la IA sigue estando ligado al Chat
@@ -19,5 +22,5 @@ Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
 
 // --- C. RUTAS DE DOCUMENTOS (Gestión de archivos) ---
 Route::get('/documents', [DocumentController::class, 'index']);           // Ver mis archivos
-Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Descargar
+Route::get('/documents/{id}/download', [DocumentController::class, 'download']);
 Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Borrar archivo
